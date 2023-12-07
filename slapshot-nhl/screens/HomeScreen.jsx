@@ -1,12 +1,21 @@
 import React from "react";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { useNavigation } from "@react-navigation/native";
+import { Animated } from "react-native";
 
 // components
 import HorizontalSplit from "../components/HorizontalSplit";
+import { FontAwesome5 } from '@expo/vector-icons';
 
-import { SafeAreaView, View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import { SafeAreaView, View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from "react-native";
 
 export default function HomeScreen(){
+
+      const navigation = useNavigation()
+
+      const handleArticleClick = (article) => {
+        navigation.navigate('ArticleDetails', { article })
+      }
     
       const featuredArticle = {
         title: 'Featured Article Title',
@@ -54,16 +63,21 @@ export default function HomeScreen(){
       ];
 
       const articlesElement = articles.map(article => {
-        return <View style={styles.articleElementContainer} key={article.id.toString()}>
-                <Image
-                    source={{ uri: article.image}}
-                    style={styles.articleImage}
-                    />
-                <View style={styles.articleTextContainer}>
-                    <Text style={styles.articleTitle}>{article.title}</Text>
-                    <Text style={styles.articleDescription}>{article.description}</Text>
-                </View>
-            </View>
+        return <TouchableOpacity
+                  key={article.id.toString()}
+                  onPress={() => handleArticleClick(article)}
+        >
+                  <View style={styles.articleElementContainer}>
+                        <Image
+                            source={{ uri: article.image}}
+                            style={styles.articleImage}
+                            />
+                        <View style={styles.articleTextContainer}>
+                            <Text style={styles.articleTitle}>{article.title}</Text>
+                            <Text style={styles.articleDescription}>{article.description}</Text>
+                        </View>
+                    </View>
+          </TouchableOpacity>
       }) 
 
     return(
@@ -101,15 +115,15 @@ const styles = StyleSheet.create({
     },
     textOnImage: {
         color: "#FFFFFF",
-        font: "700",
+        fontWeight: "700",
         fontSize: 12,
         padding: 10,
-        backgroundColor: "black",
-        fontWeight: "800"
+        backgroundColor: "black"
     },
     featuredTitle: {
         fontSize: 37,
-        margin: 20,
+        marginHorizontal: 20,
+        marginVertical: 15,
         fontWeight: "900",
         textAlign: "auto"
     },
