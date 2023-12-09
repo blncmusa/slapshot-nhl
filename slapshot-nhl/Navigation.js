@@ -20,11 +20,6 @@ const CustomTabLabel = ({ label, focused }) => {
 function MainNavigator() {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        style: {
-          paddingTop: 10
-        }
-      }}
       screenOptions={({ route }) => ({
         headerShown: true,
         headerRight: () => (

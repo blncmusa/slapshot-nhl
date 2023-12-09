@@ -3,5 +3,6 @@ import StatsScreen from './screens/StatsScreen'
 import StandingsScreen from './screens/StandingsScreen';
 import ScoresScreen from './screens/ScoresScreen'
 import ArticleDetailsScreen from './components/ArticleDetailsScreen';
+import ArticleElement from './components/ArticleElement';
 
-export { HomeScreen, StatsScreen, StandingsScreen, ScoresScreen, ArticleDetailsScreen };
+export { HomeScreen, StatsScreen, StandingsScreen, ScoresScreen, ArticleDetailsScreen, ArticleElement };
