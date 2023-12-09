@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         height: 1,
       },
       shadowOpacity: 0.2,
-      shadowRadius: 2,
+      shadowRadius: 5,
       elevation: 5, // for Android
   },
   logo: {
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 5 
   },
-  
 });
 
 export default styles;

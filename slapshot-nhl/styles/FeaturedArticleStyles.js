@@ -14,14 +14,15 @@ const styles = StyleSheet.create({
       shadowColor: "#000",
       shadowOffset: {
         width: 0,
-        height: 4,
+        height: 2,
       },
+      marginBottom: 25,
       shadowOpacity: 0.2,
-      shadowRadius: 40,
+      shadowRadius: 10,
       elevation: 5, // for Android,
     },
     featuredImage: {
-        width: wp("90%"),
+        width: wp("80%"),
         height: hp("25%"),
         resizeMode: "cover",
         borderTopRightRadius: 15,
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         fontSize: 12,
         padding: 10,
-        backgroundColor: "black"
+        backgroundColor: "black",
+        
     },
     featuredTitle: {
         fontSize: 30,

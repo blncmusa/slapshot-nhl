@@ -1,24 +1,41 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import styles from '../styles/FeaturedArticleStyles';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import styles from '../styles/FeaturedArticleStyles'
+import Carousel from 'react-native-snap-carousel'
+import { featuredArticles} from '../constants/SlideData'
 
-const FeaturedArticle = ({ article }) => {
+export default function FeaturedArticle (){
+  return (
+    <Carousel
+      data={featuredArticles}
+      loop={true}
+      autoplay={true}
+      renderItem={ItemCard}
+      sliderWidth={wp(100)}
+      firstItem={1}
+      autoplayInterval={4000}
+      itemWidth={wp(100)-70}
+      slideStyle={{display: 'flex', alignItems: 'center'}}
+    />
+  );
+};
+
+const ItemCard = ({ item }) => {
+  // Access item properties here
   return (
     <View style={styles.featuredArticleContainer}>
       <Image
-        source={{ uri: article.image }}
+        source={{ uri: item.image }}
         style={styles.featuredImage}
       />
-      <Text style={styles.textOnImage}>{article.textOnImage}</Text>
-      <Text style={styles.featuredTitle}>{article.title}</Text>
+      <Text style={styles.textOnImage}>{item.textOnImage}</Text>
+      <Text style={styles.featuredTitle}>{item.title}</Text>
       <Text style={styles.featuredDescription}>
-        {article.description.length > 170
-          ? `${article.description.substring(0, 170)}... Read More`
-          : article.description}
+        {item.description.length > 170
+          ? `${item.description.substring(0, 170)}... Read More`
+          : item.description}
       </Text>
     </View>
   );
 };
-
-export default FeaturedArticle;
