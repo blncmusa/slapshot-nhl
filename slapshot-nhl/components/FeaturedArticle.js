@@ -9,13 +9,13 @@ export default function FeaturedArticle (){
   return (
     <Carousel
       data={featuredArticles}
-      loop={true}
-      autoplay={true}
+      loop={false}
+      autoplay={false}
       renderItem={ItemCard}
       sliderWidth={wp(100)}
       firstItem={1}
       autoplayInterval={4000}
-      itemWidth={wp(100)-70}
+      itemWidth={wp(100)-45}
       slideStyle={{display: 'flex', alignItems: 'center'}}
     />
   );
@@ -29,13 +29,13 @@ const ItemCard = ({ item }) => {
         source={{ uri: item.image }}
         style={styles.featuredImage}
       />
-      <Text style={styles.textOnImage}>{item.textOnImage}</Text>
-      <Text style={styles.featuredTitle}>{item.title}</Text>
-      <Text style={styles.featuredDescription}>
-        {item.description.length > 170
-          ? `${item.description.substring(0, 170)}... Read More`
-          : item.description}
-      </Text>
+      <View style={styles.overlay} />
+      <View style={styles.headingContainer}>
+        <View>
+          <Text style={styles.logo}>Logo</Text>
+        </View>
+        <Text style={styles.featuredTitle}>{item.title}</Text>
+      </View>
     </View>
   );
 };

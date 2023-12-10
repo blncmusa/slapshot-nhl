@@ -20,9 +20,9 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     horizontalSplit: {
-        borderBottomWidth: 3,
+        borderBottomWidth: 1,
         borderBottomColor: "#000",
         marginVertical: 15,
-        width: wp("80%")
+        width: wp("90%")
     }
 })

@@ -77,15 +77,31 @@ export default function HomeScreen(){
       <ArticleElement key={article.id.toString()} article={article} />
     ));
 
+    function formatDate(date) {
+      const options = { month: 'long', day: 'numeric', year: 'numeric' };
+      return new Date(date).toLocaleDateString('en-US', options);
+  }
+
+    const currentDate = new Date();
+    const formattedDate = formatDate(currentDate);
+
+
 
     return(
       <>
       <ScrollView style={styles.screenContainer}>
 
+          <View style={styles.headerContainer}>
+            <Text style={styles.title}>Top Headlines</Text>
+            <Text style={styles.date}>{formattedDate}</Text>
+          </View>
+
           {/* Featured Article */}
           <FeaturedArticle/>
 
           <HorizontalSplit/>
+
+          <Text style={styles.subtitle}>Latest News</Text>
 
           <View style={styles.articleContainer}>
               {/* Listed Articles */}
@@ -97,5 +113,27 @@ export default function HomeScreen(){
 }
 
 const styles = StyleSheet.create({
-    
+    title: {
+      marginHorizontal: 20,
+      fontSize: 18,
+      fontWeight: "700",
+    },
+    subtitle: {
+      marginHorizontal: 20,
+      fontSize: 18,
+      fontWeight: "700",
+      marginVertical: 5
+    },
+    headerContainer: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 15,
+      marginBottom: 5,
+      justifyContent: "space-between",
+      width: wp("95")
+    },
+    date: {
+      color: "grey"
+    }
 })

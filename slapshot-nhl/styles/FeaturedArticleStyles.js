@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
       backgroundColor: "white",
       marginHorizontal: 20,
       marginTop: 15,
-      paddingBottom: 20,
       borderTopRightRadius: 15,
       borderTopLeftRadius: 15,
       borderBottomLeftRadius: 15,
@@ -22,31 +21,35 @@ const styles = StyleSheet.create({
       elevation: 5, // for Android,
     },
     featuredImage: {
-        width: wp("80%"),
+        width: wp("90%"),
         height: hp("25%"),
         resizeMode: "cover",
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15
     },
-    textOnImage: {
-        color: "#FFFFFF",
-        fontWeight: "700",
-        fontSize: 12,
-        padding: 10,
-        backgroundColor: "black",
-        
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.18)', // Adjust the opacity as needed
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
     },
     featuredTitle: {
-        fontSize: 30,
-        marginHorizontal: 25,
-        marginVertical: 15,
+        fontSize: 20,
         fontWeight: "900",
-        textAlign: "auto"
+        textAlign: "auto",
+        color: "white",
     },
-    featuredDescription: {
-      marginHorizontal: 25,
-      marginVertical: 10,
-      fontWeight: "200"
+    headingContainer: {
+        position: "absolute",
+        marginHorizontal: 25,
+        bottom: 15
+    },
+    logo: {
+        color: "white"
     }
 })
 
