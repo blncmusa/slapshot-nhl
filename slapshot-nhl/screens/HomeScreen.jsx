@@ -41,7 +41,7 @@ export default function HomeScreen(){
     }
 
   const articlesElement = newsData.map(article => (
-    <ArticleElement article={article} />
+    <ArticleElement key={article.article_id} article={article} />
   ));
 
   function formatDate(date) {
