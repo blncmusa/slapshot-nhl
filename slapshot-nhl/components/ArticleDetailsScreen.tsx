@@ -18,7 +18,7 @@ export default function ArticleDetailsScreen({ route }){
             <SafeAreaView>
                 <ScrollView>
                     <Image
-                    source={{ uri: article.image }}
+                    source={{ uri: article.image_url }}
                     style={styles.image}
                     />
                     <View>

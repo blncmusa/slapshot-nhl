@@ -13,7 +13,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     marginLeft: 10,
-    marginVertical: 10
+    marginVertical: 10,
+    borderWidth:0.5,
+    borderColor: "black"
   },
   infoHeader: {
     flex: 1,
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    marginVertical: 5,
+    marginVertical: 2,
     width: wp("100%"),
     // backgroundColor: "white",
     // borderBottomRightRadius: 20,
