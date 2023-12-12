@@ -50,7 +50,16 @@ const styles = StyleSheet.create({
     },
     logo: {
         color: "white"
-    }
+    },
+    // cta_text: {
+    //     color: "white",
+    //     fontWeight: "400"
+    // },
+    // cta_container: {
+    //     flex: 1,
+    //     alignItems: "flex-end",
+    //     marginTop: 10
+    // }
 })
 
 export default styles;

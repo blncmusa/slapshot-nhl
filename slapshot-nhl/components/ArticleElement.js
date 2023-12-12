@@ -25,10 +25,10 @@ export default function ArticleElement({ article }) {
           <View style={styles.articleTextContainer}>
             <Text style={styles.articleTitle}>{article.title}</Text>
             <Text style={styles.articleDescription} numberOfLines={3}>{article.description}</Text>
-            {/* <View style={styles.infoHeader}>
-                <Text style={styles.articleAuthor}>{article.author}</Text>
+            <View style={styles.infoHeader}>
                 <Text style={styles.logo}>{article.source_id}</Text>
-            </View> */}
+                <Text style={styles.article_cta}>Read Article →</Text>
+            </View>
           </View>
         </View>
       </View>

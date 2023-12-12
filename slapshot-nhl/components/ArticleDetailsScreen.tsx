@@ -1,6 +1,6 @@
 import { TabRouter, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaView } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaView, Linking } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default function ArticleDetailsScreen({ route }){
@@ -21,6 +21,16 @@ export default function ArticleDetailsScreen({ route }){
         </React.Fragment>
       ));
 
+    const openOriginalArticle = () => {
+        const originalArticle = article.link
+
+        Linking.openURL(originalArticle).catch((error) => {
+            console.error('Error opening article link: ', error)
+        })
+    }
+
+    const source = article.source_id.toUpperCase()
+
     return(
         <>
             <SafeAreaView>
@@ -35,6 +45,14 @@ export default function ArticleDetailsScreen({ route }){
                     <View style={styles.articleDescription}>
                         <Text style={styles.description}>{article.description}</Text>
                         <Text style={styles.content}>{formattedParagraphs}</Text>
+                    </View>
+
+                    <View style={styles.footer}>
+                        <TouchableOpacity
+                            onPress={openOriginalArticle}
+                        >
+                            <Text>Read Article on {source}</Text>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             </SafeAreaView>
@@ -80,5 +98,10 @@ const styles = StyleSheet.create({
     content: {
         fontWeight: "200",
         fontSize: 18
+    },
+    footer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
     }
 })

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
     horizontalSplit: {
         borderBottomWidth: 1,
-        borderBottomColor: "#000",
+        borderBottomColor: "#aaaaaa",
         marginVertical: 15,
         width: wp("90%")
     }

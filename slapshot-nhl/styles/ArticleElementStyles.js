@@ -5,13 +5,13 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 const styles = StyleSheet.create({
   articleImage: {
     width: wp("35%"),
-    height: hp("15%"),
+    height: hp("20%"),
     resizeMode: "cover",
     margin: 5,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    // borderTopRightRadius: 10,
+    // borderTopLeftRadius: 10,
+    // borderBottomLeftRadius: 10,
+    // borderBottomRightRadius: 10,
     marginLeft: 20,
     marginVertical: 10,
     // borderWidth:0.5,
@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignContent: "center",
+    alignItems: "center",
     marginRight: 20,
     paddingRight: 10,
-    marginTop: 20
+    marginTop: 20,
+    width: wp("50")
   },
   articleTextContainer: {
     paddingRight: 10,
@@ -71,10 +72,16 @@ const styles = StyleSheet.create({
   },
   articleStuff: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingVertical: 5,
     paddingHorizontal: 5 
   },
+  article_cta: {
+    fontSize: 10,
+    borderWidth: 1,
+    padding: 2,
+    paddingHorizontal: 5
+  }
 });
 
 export default styles;
