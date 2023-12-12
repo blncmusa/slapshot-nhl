@@ -18,6 +18,7 @@ export default function HomeScreen(){
   const [newsData, setNewsData] = React.useState([])
   const [nextPage, setNextPage] = React.useState(null);
   const [loadMorePressed, setLoadMorePressed] = React.useState(false);
+  const [featuredArticles, setFeaturedArticles] = React.useState([]);
 
   const handleArticleClick = (article) => {
     navigation.navigate('ArticleDetails', { article })
@@ -26,7 +27,8 @@ export default function HomeScreen(){
   React.useEffect(() => {
     const fetchData = async () => {
       const data = await getNews();
-      setNewsData(data.results);
+      setFeaturedArticles(data.results.slice(0,4))
+      setNewsData(data.results.slice(4));
       setNextPage(data.nextPage);
     };
     fetchData();
@@ -48,13 +50,7 @@ export default function HomeScreen(){
     setLoadMorePressed(true)
   }
 
-  const featuredArticles =
-    {
-      title: "Featured Article 1",
-      image: "https://firstsportz.com/wp-content/uploads/2023/04/Adobe_Express_20230409_1200240_1.jpg",
-      textOnImage: "Featured",
-      description: "This solution is already in production apps and is tested with a set of Android, iOS emulators of different screen specs, in order to verify that we always have the same end result.",
-    }
+  const featuredArticlesElement = <FeaturedArticle featuredArticles={featuredArticles} />;
 
   const articlesElement = newsData.map((article, index) => (
     <ArticleElement key={index} article={article} />
@@ -78,7 +74,7 @@ export default function HomeScreen(){
           </View>
 
           {/* Featured Article */}
-          <FeaturedArticle/>
+          {featuredArticlesElement}
 
           <HorizontalSplit/>
 

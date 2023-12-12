@@ -3,15 +3,14 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import styles from '../styles/FeaturedArticleStyles'
 import Carousel from 'react-native-snap-carousel'
-import { featuredArticles} from '../constants/SlideData'
 
-export default function FeaturedArticle (){
+export default function FeaturedArticle ({ featuredArticles }){
   return (
     <Carousel
       data={featuredArticles}
       loop={false}
       autoplay={false}
-      renderItem={ItemCard}
+      renderItem={({ item }) => <ItemCard article={item}/>}
       sliderWidth={wp(100)}
       firstItem={1}
       autoplayInterval={4000}
@@ -21,20 +20,16 @@ export default function FeaturedArticle (){
   );
 };
 
-const ItemCard = ({ item }) => {
-  // Access item properties here
+const ItemCard = ({ article }) => {
   return (
     <View style={styles.featuredArticleContainer}>
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: article.image_url }}
         style={styles.featuredImage}
       />
       <View style={styles.overlay} />
       <View style={styles.headingContainer}>
-        <View>
-          <Text style={styles.logo}>Logo</Text>
-        </View>
-        <Text style={styles.featuredTitle}>{item.title}</Text>
+        <Text style={styles.featuredTitle}>{article.title}</Text>
       </View>
     </View>
   );

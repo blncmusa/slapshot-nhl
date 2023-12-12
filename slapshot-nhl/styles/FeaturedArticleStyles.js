@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.18)', // Adjust the opacity as needed
+        backgroundColor: 'rgba(0, 0, 0, 0.40)', // Adjust the opacity as needed
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15,
