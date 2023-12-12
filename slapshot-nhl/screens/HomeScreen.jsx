@@ -15,22 +15,38 @@ import { SafeAreaView, View, Text, ScrollView, StyleSheet, Image, TouchableOpaci
 export default function HomeScreen(){
 
   const navigation = useNavigation()
+  const [newsData, setNewsData] = React.useState([])
+  const [nextPage, setNextPage] = React.useState(null);
+  const [loadMorePressed, setLoadMorePressed] = React.useState(false);
 
   const handleArticleClick = (article) => {
     navigation.navigate('ArticleDetails', { article })
   }
 
-  const [newsData, setNewsData] = React.useState([])
-  const [filteredNews, setFilteredNews] = React.useState([])
-
   React.useEffect(() => {
     const fetchData = async () => {
       const data = await getNews();
-      // const filteredData = data.filter(article => article.image !== null);
-      setNewsData(data);
+      setNewsData(data.results);
+      setNextPage(data.nextPage);
     };
     fetchData();
   }, []);
+
+  React.useEffect(() => {
+    const fetchMoreData = async () => {
+      if (loadMorePressed && nextPage) {
+        const moreData = await getNews(nextPage);
+        setNewsData((prevData) => [...prevData, ...moreData.results]);
+        setNextPage(moreData.nextPage)
+        setLoadMorePressed(false)
+      }
+    };
+    fetchMoreData();
+  }, [loadMorePressed]);
+  
+  const loadMoreArticles = () => {
+    setLoadMorePressed(true)
+  }
 
   const featuredArticles =
     {
@@ -40,8 +56,8 @@ export default function HomeScreen(){
       description: "This solution is already in production apps and is tested with a set of Android, iOS emulators of different screen specs, in order to verify that we always have the same end result.",
     }
 
-  const articlesElement = newsData.map(article => (
-    <ArticleElement key={article.article_id} article={article} />
+  const articlesElement = newsData.map((article, index) => (
+    <ArticleElement key={index} article={article} />
   ));
 
   function formatDate(date) {
@@ -70,7 +86,15 @@ export default function HomeScreen(){
 
           <View style={styles.articleContainer}>
               {/* Listed Articles */}
-             <>{articlesElement}</>
+            <>{articlesElement}</>
+            <View style={styles.footer}>
+              <TouchableOpacity 
+                onPress={loadMoreArticles}
+                style={styles.button}
+                >
+                <Text>Load More</Text>
+              </TouchableOpacity>
+            </View>
           </View> 
       </ScrollView>
     </>
@@ -100,5 +124,17 @@ const styles = StyleSheet.create({
     },
     date: {
       color: "grey"
+    },
+    button: {
+        borderWidth: 1,
+        borderColor: "black",
+        padding: 10
+    },
+    footer: {
+      flex: 1,
+      width: wp("100%"),
+      height: hp("10%"),
+      justifyContent: "center",
+      alignItems: "center",
     }
 })

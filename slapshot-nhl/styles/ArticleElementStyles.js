@@ -4,7 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const styles = StyleSheet.create({
   articleImage: {
-    width: wp("30%"),
+    width: wp("35%"),
     height: hp("15%"),
     resizeMode: "cover",
     margin: 5,
@@ -12,10 +12,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    marginLeft: 10,
+    marginLeft: 20,
     marginVertical: 10,
-    borderWidth:0.5,
-    borderColor: "black"
+    // borderWidth:0.5,
+    // borderColor: "black"
   },
   infoHeader: {
     flex: 1,
