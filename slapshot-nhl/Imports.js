@@ -6,3 +6,8 @@ import ArticleDetailsScreen from './components/ArticleDetailsScreen';
 import ArticleElement from './components/ArticleElement';
 
 export { HomeScreen, StatsScreen, StandingsScreen, ScoresScreen, ArticleDetailsScreen, ArticleElement };
+
+// stats-screen: 
+import StatsResults from './components/stats/TeamSearchResults';
+
+export { StatsResults }
