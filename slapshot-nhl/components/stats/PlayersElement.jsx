@@ -1,56 +1,84 @@
 import React from "react";
 
-import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native";
+import { View, Text, SafeAreaView, Image, StyleSheet, TouchableOpacity } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { useNavigation } from "@react-navigation/native";
 
 export default function PlayersData({ forwards, defensemen, goalies }){
+
+    const navigation = useNavigation();
+
+    const handlePlayerClick = (player) => {
+        navigation.navigate('PlayerDetails', { player });
+    };
         
     const forwardsRow = forwards.map((player, index) => {
         return (
-            <View style={styles.playerRow}>
-                <View style={styles.playerInfo}>
-                    <Image
-                        source={{ uri: player.headshot }}
-                        style={styles.playerImage}
-                    />
-                    <Text style={styles.playerName}>{player.firstName.default} {player.lastName.default}</Text>
+            <TouchableOpacity 
+            onPress={() => handlePlayerClick(player)}
+            activeOpacity={0.6}
+            key={player.id}
+            style={styles.touchable}
+            >
+                <View style={styles.playerRow}>
+                    <View style={styles.playerInfo}>
+                        <Image
+                            source={{ uri: player.headshot }}
+                            style={styles.playerImage}
+                        />
+                        <Text style={styles.playerName}>{player.firstName.default} {player.lastName.default}</Text>
+                    </View>
+                    <Text>{player.sweaterNumber}</Text>
+                    <Text>{player.positionCode}</Text>
                 </View>
-                <Text>{player.sweaterNumber}</Text>
-                <Text>{player.positionCode}</Text>
-            </View>
+            </TouchableOpacity>
         )
     })
 
     const defensemenRow = defensemen.map((player, index) => {
         return (
-            <View style={styles.playerRow}>
-                <View style={styles.playerInfo}>
-                    <Image
-                        source={{ uri: player.headshot }}
-                        style={styles.playerImage}
-                    />
-                    <Text style={styles.playerName}>{player.firstName.default} {player.lastName.default}</Text>
+            <TouchableOpacity 
+            onPress={() => handlePlayerClick(player)}
+            activeOpacity={0.6}
+            key={player.id}
+            style={styles.touchable}
+            >
+                <View style={styles.playerRow}>
+                    <View style={styles.playerInfo}>
+                        <Image
+                            source={{ uri: player.headshot }}
+                            style={styles.playerImage}
+                        />
+                        <Text style={styles.playerName}>{player.firstName.default} {player.lastName.default}</Text>
+                    </View>
+                    <Text>{player.sweaterNumber}</Text>
+                    <Text>{player.positionCode}</Text>
                 </View>
-                <Text>{player.sweaterNumber}</Text>
-                <Text>{player.positionCode}</Text>
-            </View>
+            </TouchableOpacity>
         )
     }
     )
 
     const goaliesRow = goalies.map((player, index) => {
         return (
-            <View style={styles.playerRow}>
-                <View style={styles.playerInfo}>
-                    <Image
-                        source={{ uri: player.headshot }}
-                        style={styles.playerImage}
-                    />
-                    <Text style={styles.playerName}>{player.firstName.default} {player.lastName.default}</Text>
+            <TouchableOpacity 
+            onPress={() => handlePlayerClick(player)}
+            key={player.id}
+            activeOpacity={0.6}
+            style={styles.touchable}
+            >
+                <View style={styles.playerRow}>
+                    <View style={styles.playerInfo}>
+                        <Image
+                            source={{ uri: player.headshot }}
+                            style={styles.playerImage}
+                        />
+                        <Text style={styles.playerName}>{player.firstName.default} {player.lastName.default}</Text>
+                    </View>
+                    <Text>{player.sweaterNumber}</Text>
+                    <Text>{player.positionCode}</Text>
                 </View>
-                <Text>{player.sweaterNumber}</Text>
-                <Text>{player.positionCode}</Text>
-            </View>
+            </TouchableOpacity>
         )
     }
     )
@@ -60,6 +88,8 @@ export default function PlayersData({ forwards, defensemen, goalies }){
         <Text style={styles.playerNumberHeader}>#</Text>
         <Text style={styles.playerPositionHeader}>Pos</Text>
     </View>
+
+    const nullVoid = null
 
     return (
         <SafeAreaView style={styles.container}>
@@ -119,6 +149,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
+        backgroundColor: "white"
     },
     playerInfo: {
         flexDirection: "row",
@@ -148,5 +179,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginRight: 10,
         marginLeft: 5
+    },
+    touchable: {
+
     }
 })

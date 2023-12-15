@@ -5,6 +5,7 @@ import { Entypo, Ionicons, Fontisto, MaterialCommunityIcons, FontAwesome5 } from
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ArticleDetailsScreen from './components/ArticleDetailsScreen';
+import PlayerDetailsScreen from './components/PlayerDetailsScreen';
 
 
 
@@ -106,6 +107,17 @@ function Navigation() {
           gestureResponseDistance: 200
         }}
         />
+        <Stack.Screen 
+        name="PlayerDetails" 
+        component={Component.PlayerDetailsScreen}
+        options={{
+          presentation: "card",
+          title: 'Details',
+          headerShown: false,
+          gestureEnabled: true,
+          // gestureDirection: "horizontal",
+          gestureResponseDistance: 600
+        }}/>
     </Stack.Navigator>
   );
 }

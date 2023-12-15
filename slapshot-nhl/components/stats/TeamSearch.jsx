@@ -23,7 +23,7 @@ export default function TeamSearch({ teamData, searchTerm, onSearchTermChange })
   };
 
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, { height: searchResults.length > 0 ? hp("40%") : 0 }]}>
         <View style={styles.container}>
             <TextInput
             placeholder="Search for a team..."
@@ -41,7 +41,7 @@ export default function TeamSearch({ teamData, searchTerm, onSearchTermChange })
                 <TouchableOpacity 
                     onPress={() => handleOptionPress(item[0])}
                     >
-                    <Text style={styles.resultsText}>
+                    <Text style={[styles.resultsText, searchResults.length > 0 && styles.resultsTextWithBackground]}>
                         <Text style={styles.abbreviationText}>{item[0]}</Text> —{" "}
                         <Text style={styles.fullText}>{item[1]}</Text>
                     </Text>
@@ -57,12 +57,14 @@ const styles = StyleSheet.create({
     textInput: {
         backgroundColor: "white",
         height: hp("5%"),
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        borderColor: "#aaaaaa",
+        borderWidth: 1
     },
     container: {
         flexDirection: "column",
-        borderWidth: 1,
-        borderColor: "red",
+        // borderWidth: 1,
+        // borderColor: "red",
         width: "100%",
         height: hp("5%")
     },
@@ -76,19 +78,23 @@ const styles = StyleSheet.create({
         zIndex: 1, // Adjust as needed
         position: "absolute",
         width: "100%",
+        paddingBottom: 10
     }, 
     results: {
-        borderWidth: 1,
-        borderColor: "yellow",
-        paddingHorizontal: 20
+        // borderWidth: 1,
+        // borderColor: "yellow",
+        // paddingHorizontal: 20
     },
     resultsText: {
         fontSize: 18,
         paddingVertical: 10,
-        borderWidth: 1,
-        borderColor: "black",
+        // borderWidth: 1,
+        // borderColor: "black",
         backgroundColor: "white",
-        paddingHorizontal: 10
+        paddingHorizontal: 25
+    },
+    resultsTextWithBackground: {
+        backgroundColor: "white"
     },
     abbreviationText: {
         fontWeight: "bold"
