@@ -1,7 +1,7 @@
 
 const getRoster = async (team) => {
 
-    const request = "https://api-web.nhle.com/v1/roster/TOR/current"
+    const request = `https://api-web.nhle.com/v1/roster/${team}/current`
 
     try {
         const response = await fetch(request)

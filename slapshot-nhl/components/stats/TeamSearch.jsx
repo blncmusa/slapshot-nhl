@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-export default function TeamSearch({ teamData }) {
-  const [searchTerm, setSearchTerm] = React.useState('');
+export default function TeamSearch({ teamData, searchTerm, onSearchTermChange }) {
   const [searchResults, setSearchResults] = React.useState([]);
 
   const handleSearch = (text) => {
@@ -14,12 +13,12 @@ export default function TeamSearch({ teamData }) {
         abbreviation.includes(searchTermToUppercase) ||
         name.toUpperCase().includes(searchTermToUppercase)
     );
-
     setSearchResults(results);
+    onSearchTermChange(text)
   };
 
   const handleOptionPress = (selectedTerm) => {
-    setSearchTerm(selectedTerm);
+    onSearchTermChange(selectedTerm);
     setSearchResults([]);
   };
 
@@ -29,10 +28,7 @@ export default function TeamSearch({ teamData }) {
             <TextInput
             placeholder="Search for a team..."
             value={searchTerm}
-            onChangeText={(text) => {
-                setSearchTerm(text);
-                handleSearch(text);
-            }}
+            onChangeText={(text) => {handleSearch(text)}}
             style={styles.textInput}
             />  
         </View>  
@@ -45,8 +41,9 @@ export default function TeamSearch({ teamData }) {
                 <TouchableOpacity 
                     onPress={() => handleOptionPress(item[0])}
                     >
-                    <Text>
-                    <Text style={styles.results}>{item[0]}</Text> — {item[1]}
+                    <Text style={styles.resultsText}>
+                        <Text style={styles.abbreviationText}>{item[0]}</Text> —{" "}
+                        <Text style={styles.fullText}>{item[1]}</Text>
                     </Text>
                 </TouchableOpacity>
                 )}
@@ -60,15 +57,14 @@ const styles = StyleSheet.create({
     textInput: {
         backgroundColor: "white",
         height: hp("5%"),
-        paddingHorizontal: 15
+        paddingHorizontal: 20
     },
     container: {
         flexDirection: "column",
         borderWidth: 1,
         borderColor: "red",
         width: "100%",
-        marginTop: 20,
-        height: hp("10%")
+        height: hp("5%")
     },
     results: {
         fontSize: 18,
@@ -76,11 +72,24 @@ const styles = StyleSheet.create({
     },
     wrap: {
         flexDirection: "column",
-        height: hp("50%"),
+        height: hp("40%"),
         
     }, 
     results: {
         borderWidth: 1,
-        borderColor: "yellow"
+        borderColor: "yellow",
+        paddingHorizontal: 20
+    },
+    resultsText: {
+        fontSize: 18,
+        paddingVertical: 10,
+        borderWidth: 1,
+        borderColor: "black",
+        backgroundColor: "white",
+        paddingHorizontal: 10
+    },
+    abbreviationText: {
+        fontWeight: "bold"
     }
+
 })
