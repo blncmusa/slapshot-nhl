@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
     wrap: {
         flexDirection: "column",
         height: hp("40%"),
-        
+        zIndex: 1, // Adjust as needed
+        position: "absolute",
+        width: "100%",
     }, 
     results: {
         borderWidth: 1,

@@ -6,9 +6,16 @@ import getRoster from '../util/GetRoster';
 import { ScrollView } from 'react-native-gesture-handler';
 import TeamSearch from "../../components/stats/TeamSearch";
 import teamData from "../../constants/TeamAbbreviations";
+import PlayersData from './PlayersElement';
 
 export default function StatsResults() {
     const [team, setTeam] = React.useState([]);
+
+    const [forwards, setForwards] = React.useState([]);
+    const [defensemen, setDefensemen] = React.useState([]);
+    const [goalies, setGoalies] = React.useState([]);
+
+
 
     // Please, God! I'm so tired
     const [selectedTeam, setSelectedTeam] = React.useState('');
@@ -42,12 +49,10 @@ export default function StatsResults() {
         const fetchData = async () => {
           try {
             const data = await getRoster(validSelectedTeam);
-            const allPlayers = [
-              ...data.defensemen,
-              ...data.forwards,
-              ...data.goalies
-            ];
-            setTeam(allPlayers);
+            setForwards(data.forwards);
+            setDefensemen(data.defensemen);
+            setGoalies(data.goalies);
+            setTeam(data);
           } catch (error) {
             console.error(error);
           }
@@ -60,23 +65,9 @@ export default function StatsResults() {
     const handleSearchTermChange = (newTerm) => {
       setSelectedTeam(newTerm);
     };
-  
-    const playersElement = team.map((player) => {
-      return (
-        <View key={player.id} style={styles.statsResultsContainer}>
-          <View>
-            <Image
-              source={{ uri: player.headshot }}
-              style={styles.playerImage}
-            />
-          </View>
-          <View style={styles.playerName}>
-            <Text>{player.firstName.default}</Text>
-            <Text>{player.lastName.default}</Text>
-          </View>
-        </View>
-      );
-    });
+
+    // pass down team to PlayersElement and then map over it to get the players data    
+
   
     return (
       <>
@@ -87,7 +78,7 @@ export default function StatsResults() {
             searchTerm={selectedTeam}
           />
           <ScrollView>
-            {playersElement}
+                <PlayersData forwards={forwards} defensemen={defensemen} goalies={goalies} />
           </ScrollView>
         </SafeAreaView>
       </>
