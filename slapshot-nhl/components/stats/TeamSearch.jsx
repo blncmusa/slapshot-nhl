@@ -40,6 +40,7 @@ export default function TeamSearch({ teamData, searchTerm, onSearchTermChange })
                 renderItem={({ item }) => (
                 <TouchableOpacity 
                     onPress={() => handleOptionPress(item[0])}
+                    activeOpacity={1}
                     >
                     <Text style={[styles.resultsText, searchResults.length > 0 && styles.resultsTextWithBackground]}>
                         <Text style={styles.abbreviationText}>{item[0]}</Text> —{" "}

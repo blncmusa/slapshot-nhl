@@ -138,9 +138,9 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     playerImage: {
-        width: wp("20%"),
-        height: hp("10%"),
-        borderWidth: 1.5,
+        width: wp("10%"),
+        height: hp("5%"),
+        borderWidth: 1,
         borderColor: "black",
         shadowColor: "#000",
         shadowOffset: {
@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        backgroundColor: "white"
+        backgroundColor: "white",
+        borderRadius: 50,
     },
     playerInfo: {
         flexDirection: "row",
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     playerName: {
         width: wp("50%"),
         paddingLeft: 20,
-        fontWeight: "bold",
+        // fontWeight: "bold",
         fontSize: 16
     },
     playerPositionHeader: {
