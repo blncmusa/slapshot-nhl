@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
     playerName: {
         width: wp("50%"),
         paddingLeft: 20,
-        // fontWeight: "bold",
         fontSize: 16
     },
     playerPositionHeader: {
