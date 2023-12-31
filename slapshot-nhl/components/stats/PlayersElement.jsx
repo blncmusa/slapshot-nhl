@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, SafeAreaView, Image, StyleSheet, TouchableOpacity } from "react-native";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useNavigation } from "@react-navigation/native";
+import SkaterLeaders from "./SkaterLeaders";
 
 export default function PlayersData({ forwards, defensemen, goalies }){
 
@@ -91,25 +92,32 @@ export default function PlayersData({ forwards, defensemen, goalies }){
 
     const nullVoid = null
 
-    return (
+    if (goalies.length === 0) {
+        return <View style={styles.tabContainer}>
+            <SkaterLeaders />
+            </View>
+    }
+      
+      return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.positionContainer}>
-                <Text style={styles.subheading}>Forwards</Text>
-                {tableHeader}
-                {forwardsRow}
-            </View>
-            <View style={styles.positionContainer}>
-                <Text style={styles.subheading}>Defensemen</Text>
-                {tableHeader}
-                {defensemenRow}
-            </View>
-            <View style={styles.positionContainer}>
-                <Text style={styles.subheading}>Goalies</Text>
-                {tableHeader}
-                {goaliesRow}
-            </View>
+          <View style={styles.positionContainer}>
+            <Text style={styles.subheading}>Forwards</Text>
+            {tableHeader}
+            {forwardsRow}
+          </View>
+          <View style={styles.positionContainer}>
+            <Text style={styles.subheading}>Defensemen</Text>
+            {tableHeader}
+            {defensemenRow}
+          </View>
+          <View style={styles.positionContainer}>
+            <Text style={styles.subheading}>Goalies</Text>
+            {tableHeader}
+            {goaliesRow}
+          </View>
         </SafeAreaView>
-    )
+    );
+      
 }
 
 const styles = StyleSheet.create({
@@ -117,6 +125,9 @@ const styles = StyleSheet.create({
         marginTop: hp("8%"),
         marginHorizontal: wp("7%")
     }, 
+    tabContainer: {
+        height: hp("100%"),
+    },
     positionContainer: {
         marginBottom: 20
     },

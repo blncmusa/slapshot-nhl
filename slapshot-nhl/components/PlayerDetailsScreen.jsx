@@ -11,35 +11,34 @@ export default function PlayerDetailsScreen({ route }){
     const { player } = route.params
     const [thisSeason, setThisSeason] = React.useState([]);
     const [career, setCareer] = React.useState([]);
+    const [shootingPctgFixedSeason, setShootingPctgFixedSeason] = React.useState([]);
+    const [shootingPctgFixedCareer, setShootingPctgFixedCareer] = React.useState([]);
+    const [team, setTeam] = React.useState([]);
+
+    const playerNumber = player.sweaterNumber < 10 ? `0${player.sweaterNumber}` : player.sweaterNumber;
 
     React.useEffect(() => {
         getSpecificPlayerInfo(player.id).then((data) => {
             setPlayerInfo(data);
             setThisSeason(data.featuredStats.regularSeason.subSeason);
             setCareer(data.featuredStats.regularSeason.career);
+            setShootingPctgFixedSeason((data.featuredStats.regularSeason.subSeason.shootingPctg * 100).toFixed(2) + '%');
+            setShootingPctgFixedCareer((data.featuredStats.regularSeason.career.shootingPctg * 100).toFixed(2) + '%');
+            setTeam(data.fullTeamName.default);
         })
     }, [])
-
-    // gamesPlayed": 595,
-    //             "goals": 314,
-    //             "assists": 577,
-    //             "points": 891,
-    //             "plusMinus": 114,
-    //             "pim": 233,
-    //             "gameWinningGoals": 64,
-    //             "otGoals": 15,
-    //             "shots": 2028,
-    //             "shootingPctg": 0.1548,
-    //             "powerPlayGoals": 74,
-    //             "powerPlayPoints": 306,
-    //             "shorthandedGoals": 7,
-    //             "shorthandedPoints": 16
+    
 
     const properStats = <View style={styles.statContainer}>
         <View style={styles.stat}>
             <Text style={styles.statText}>{thisSeason.gamesPlayed}</Text>
             <Text style={styles.statText}>Games Played</Text>
             <Text style={styles.statText}>{career.gamesPlayed}</Text>
+        </View>
+        <View style={styles.stat}>
+            <Text style={styles.statText}>{thisSeason.goals}</Text>
+            <Text style={styles.statText}>Goals</Text>
+            <Text style={styles.statText}>{career.goals}</Text>
         </View>
         <View style={styles.stat}>
             <Text style={styles.statText}>{thisSeason.assists}</Text>
@@ -77,9 +76,9 @@ export default function PlayerDetailsScreen({ route }){
             <Text style={styles.statText}>{career.shots}</Text>
         </View>
         <View style={styles.stat}>
-            <Text style={styles.statText}>{thisSeason.shootingPctg}</Text>
+            <Text style={styles.statText}>{shootingPctgFixedSeason}</Text>
             <Text style={styles.statText}>Shooting Percentage</Text>
-            <Text style={styles.statText}>{career.shootingPctg}</Text>
+            <Text style={styles.statText}>{shootingPctgFixedCareer}</Text>
         </View>
         <View style={styles.stat}>
             <Text style={styles.statText}>{thisSeason.powerPlayGoals}</Text>
@@ -94,19 +93,23 @@ export default function PlayerDetailsScreen({ route }){
         <View style={styles.stat}>
             <Text style={styles.statText}>{thisSeason.shorthandedPoints}</Text>
             <Text style={styles.statText}>Short-handed Points</Text>
-            <Text style={styles.statText}>{career.shortHandedPoints}</Text>
+            <Text style={styles.statText}>{career.shorthandedPoints}</Text>
         </View>
     </View>
 
 
     return (
         <>
-            <SafeAreaView style={styles.container}>
                 <ScrollView>
-                    {/* <Text style={styles.sweaterNumber}>{playerInfo.sweaterNumber}</Text> */}
-                    <Image style={styles.image} source={{uri: player.headshot }}/>
-                    <SvgUri style={styles.logo} uri={playerInfo.teamLogo} />
-                    <View style={styles.overlay} />
+                    <View style={styles.imageContainer}>
+                        <Image style={styles.image} source={{uri: player.headshot }}/>
+                        <View style={styles.overlay} />
+                        <Text style={styles.sweaterNumber}>{playerNumber}</Text>
+                    </View>
+                    {/* <View style={styles.teamBanner}>
+                        <Text style={styles.teamName}>{ team }</Text>
+                        <SvgUri style={styles.logo} uri={playerInfo.teamLogo} />
+                    </View> */}
                     <View style={styles.name}>
                         <View>
                             <Text style={styles.firstName}>{player.firstName.default}</Text>
@@ -116,22 +119,28 @@ export default function PlayerDetailsScreen({ route }){
                             <Text style={styles.position}>{playerInfo.position}</Text>
                         </View>
                     </View>
-                    <View style={styles.stats}>
-                        <Text>Stats</Text>
-                        {properStats}
+                    <View style={styles.statContainer}>
+                        <View style={styles.stats}>
+                            <View style={styles.label}>
+                                <Text style={styles.statText}>Season</Text>
+                                <Text style={styles.statText}>Stats</Text>
+                                <Text style={styles.statText}>Career</Text>
+                            </View>
+                            <View>
+                                {properStats}
+                            </View>
+                        </View>
                     </View>
-                    <View></View>
                 </ScrollView>
-            </SafeAreaView>
         </>
     )
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     backgroundColor: '#fff'
-    // },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
     image: {
         width: wp('100%'),
         height: hp('50%'),
@@ -139,13 +148,28 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     logo: {
-        width: wp('150%'),
-        height: hp('50%'),
-        resizeMode: 'contain',
+       width: hp('10%'),
+       justifyContent: "flex-end",
+    },
+    teamName: {
+        color: "white"
+    },
+    teamBanner: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingHorizontal: wp('10%'),
+        backgroundColor: "#aaa",
+        height: hp('5%'),
+        marginBottom: hp('4%'),
+    },
+    crest: {
         position: "absolute",
-        top: hp('0%'),
-        left: wp('-25%'),
-        opacity: 0.6,
+        // top: hp('-10'),
+        // left: wp('-20'),
+        // width: wp("50%"),
+        zIndex: 2,
+        width: hp('10%'),
+        heigth: hp('10%'),
     },
     name: {
         flexDirection: "row",
@@ -154,6 +178,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 40,
         justifyContent: "space-between",
         alignItems: "center",
+    },
+    sweaterNumber: {
+        fontSize: 100,
+        fontWeight: "bold",
+        position: "absolute",
+        top: hp('32'),
+        left: wp('60'),
+        color: "white",
+        zIndex: 2,
+    },
+    imageContainer: {
+        paddingTop: hp('5%'),
     },
     firstName: {
         fontSize: 24,
@@ -168,15 +204,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         height: hp('48%'),
     },
-    sweaterNumber: {
-        fontSize: 122,
-        fontWeight: "bold",
-        position: "absolute",
-        bottom: hp('12%'),
-        right: wp('8%'),
-        zIndex: 2,
-        color: "white"
-    },
     position: {
         fontSize: 50,
         fontWeight: "200",
@@ -185,16 +212,22 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         width: wp('100%'),
+        marginTop: hp('2%'),
     },
     stat: {
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-evenly",
+        marginVertical: 4
     },
     statText: {
-        width: wp('30%'),
+        width: wp('40%'),
         textAlign: "center",
-        fontSize: 16,
-        
-
+        fontSize: 14,
+    },
+    label: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        marginVertical: 4,
+        marginBottom: 10
     }
 })

@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
         marginLeft: 6,
         fontSize: 10,
         fontWeight: "bold"
-
     },
     statOver: {
         marginLeft: 6,
