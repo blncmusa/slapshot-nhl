@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { useNavigation } from "@react-navigation/native";
@@ -7,6 +8,7 @@ import { SvgUri } from 'react-native-svg';
 
 export default function GoalLeaders() {
 
+    const [selectedYear, setSelectedYear] = React.useState('default'); 
     const [goalLeaders, setGoalLeaders] = React.useState([]);
 
     const navigation = useNavigation();
@@ -17,24 +19,57 @@ export default function GoalLeaders() {
 
     React.useEffect(() => {
         const fetchData = async () => {
-            const year = new Date().getFullYear();
+          try {
+            // set the year to current year if no year is selected, otherwise set it to the selected year, however if the month is between January and October 10th, set the year to the previous year
+            let year = new Date().getFullYear();
+            const month = new Date().getMonth();
+            if (month >= 0 && month <= 8) { // July is 6 and September is 8 in JavaScript
+                year = year - 1;
+            }
             const nextYear = year + 1;
+
+            if (selectedYear) {
+                let year = selectedYear
+                const month = new Date().getMonth();
+                if (month >= 0 && month <= 8) { // July is 6 and September is 8 in JavaScript
+                    year = year - 1;
+                }
+                const nextYear = year + 1;
+            }
+
             const response = await fetch(`https://api-web.nhle.com/v1/skater-stats-leaders/${year}${nextYear}/2?categories=goals&limit=10`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
-            setGoalLeaders(data.goals)
-        }
+            setGoalLeaders(data.goals);
+            } catch (error) {
+                console.log("Error: ", error);
+            }
+        };
+
         fetchData();
-    }, [])
+    }, [selectedYear]);
+
+    let year = new Date().getFullYear();
+    const month = new Date().getMonth();
+    if (month >= 0 && month <= 8) { // July is 6 and September is 8 in JavaScript
+        year = year - 1;
+    }
+    const NextYear = year + 1;
+    let secondYear = Number(NextYear.toString().slice(-2))
+
+    const title = <View style={styles.positionContainer}>
+        <Text style={styles.title}>Goal Leaders for Season {year}/{secondYear}</Text>
+    </View>
 
     const labels = <View style={styles.labels}>
         <Text>Rank</Text>
         <Text>Name</Text>
-        <Text>Assists</Text>
+        <Text>Goals</Text>
     </View>
 
     const players = goalLeaders.map((player, index) => {
-
-        console.log(player.teamLogo)
 
         return (
             <TouchableOpacity 
@@ -65,13 +100,58 @@ export default function GoalLeaders() {
         )
     })
 
+    
+    // const generateYearOptions = () => {
+    //     const currentYear = new Date().getFullYear();
+    //     const startYear = 1917;
+    //     const currentMonth = new Date().getMonth();
+      
+    //     // If the current month is before October, exclude the next season
+    //     const excludeNextSeason = currentMonth < 9; // October is month index 9, right?!
+       
+    //     const years = [];
+    //     for (let i = currentYear; i >= startYear; i--) {
+    //       const season = `${i}-${i + 1}`;
+    //       if (!excludeNextSeason || season !== `${currentYear}-${currentYear + 1}`) {
+    //         years.push(season);
+    //       }
+    //     }
+      
+    //     return years.map((year) => (
+    //       <Picker.Item key={year} label={year} value={year} />
+    //     ));
+    // };
+    
+    // const handleYearChange = (itemValue) => {
+    //     setSelectedYear(itemValue);
+    // };
+    
+    // const yearPicker = (
+    //     <Picker
+    //     selectedValue={selectedYear}
+    //     onValueChange={handleYearChange(itemValue)}
+    //     >
+    //     <Picker.Item label="Default" value="default" />
+    //     {generateYearOptions()}
+    //     </Picker>
+    //   );
+
     return (
         <ScrollView 
         showsVerticalScrollIndicator={false} // Set to false to hide vertical scroll bar (iOS)
         showsHorizontalScrollIndicator={false} // Set to false to hide horizontal scroll bar (Android)
             style={styles.container}>
-                {labels}
-                {players}
+                {/* <View>
+                    <Text>Select a Year:</Text>
+                    {yearPicker}
+                    <Text>Goal Leaders for Season {selectedYear ? `${selectedYear}` : 'Default'}</Text>
+                    {/* Render the goal leaders data as needed */}
+                {/* </View> */}
+                <View style={styles.playersListContainer}>
+                    {title}
+                    {labels}
+                    {players}
+                </View>
         </ScrollView>
     )
 
@@ -79,17 +159,23 @@ export default function GoalLeaders() {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: hp("5%"),
+        paddingTop: hp("2.5%"),
         marginHorizontal: wp("8%"),
         marginBottom: hp("20%"),
         zIndex: 2,
-        marginTop: hp("-0.5%")
     }, 
+    playersListContainer: {
+        marginBottom: hp("8%"),
+    },
+    title: {
+        fontSize: wp("5%"),
+        fontWeight: "bold",
+    },
     labels: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginBottom: 20,
-        marginTop: 20,
+        marginTop: 10,
     },
     tabContainer: {
         height: hp("100%"),
@@ -126,9 +212,8 @@ const styles = StyleSheet.create({
     },
     playerImage: {
         width: wp("20%"),
-        height: hp("15%"),
-        borderWidth: 2,
-        borderColor: "black",
+        height: hp("10%"),
+        borderRadius: 50,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -136,7 +221,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        backgroundColor: "white"
+        backgroundColor: "#F4F2F0"
     },
     playerInfo: {
         flexDirection: "row",
@@ -152,7 +237,8 @@ const styles = StyleSheet.create({
     playerName: {
         width: wp("50%"),
         paddingLeft: 20,
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: "600"
     },
     playerPositionHeader: {
         fontWeight: "bold",

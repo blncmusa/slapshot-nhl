@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10
     },
     title: {
-        fontSize: 30,
+        fontSize: 50,
         fontWeight: "800",
         marginVertical: 15,
         marginHorizontal: 5
@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         marginHorizontal: 20,
-        marginVertical: 10
+        marginVertical: 10,
     },
     description: {
         marginVertical: 10,
         fontWeight: "500",
-        fontSize: 20,
+        fontSize: 15,
         marginBottom: 30
     },
     content: {

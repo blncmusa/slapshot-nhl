@@ -4,6 +4,9 @@ import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, SafeAreaVi
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import getSpecificPlayerInfo from "./util/GetSpecificPlayerInfor";
 import { SvgUri } from "react-native-svg";
+import convertCmToFeetAndInches from "./util/CmToInch";
+import { calculateAge, formatBirthDate } from "./util/CalculateAge";
+
 
 export default function PlayerDetailsScreen({ route }){
 
@@ -14,6 +17,8 @@ export default function PlayerDetailsScreen({ route }){
     const [shootingPctgFixedSeason, setShootingPctgFixedSeason] = React.useState([]);
     const [shootingPctgFixedCareer, setShootingPctgFixedCareer] = React.useState([]);
     const [team, setTeam] = React.useState([]);
+    const [playerAge, setPlayerAge] = React.useState(null);
+    const [playerFormattedBirthdate, setplayerFormattedBirthdate] = React.useState(null);
 
     const playerNumber = player.sweaterNumber < 10 ? `0${player.sweaterNumber}` : player.sweaterNumber;
 
@@ -25,8 +30,15 @@ export default function PlayerDetailsScreen({ route }){
             setShootingPctgFixedSeason((data.featuredStats.regularSeason.subSeason.shootingPctg * 100).toFixed(2) + '%');
             setShootingPctgFixedCareer((data.featuredStats.regularSeason.career.shootingPctg * 100).toFixed(2) + '%');
             setTeam(data.fullTeamName.default);
+            let age = calculateAge(data.birthDate);
+            let formattedBirthDate = formatBirthDate(data.birthDate);
+            setPlayerAge(age);
+            setplayerFormattedBirthdate(formattedBirthDate);
         })
     }, [])
+
+    // What a disgusting mess. Fgs. I'm so sorry, Future Mustafa. 
+    // I rly hope you look back at this in disgust, it'll mean you considerably improved.
     
 
     const properStats = <View style={styles.statContainer}>
@@ -97,6 +109,14 @@ export default function PlayerDetailsScreen({ route }){
         </View>
     </View>
 
+    const playerPlaceOfBirth = playerInfo?.birthCity ?
+        <Text><Text style={styles.bioLabel}>Place of birth:</Text> {playerInfo.birthCity.default}, {playerInfo.birthStateProvince?.default ? playerInfo.birthStateProvince.default : ""} [{playerInfo.birthCountry}]</Text> : ""
+
+
+    const feet = convertCmToFeetAndInches(playerInfo?.heightInCentimeters)
+    const playerHeight = playerInfo?.heightInCentimeters ? <Text><Text style={styles.bioLabel}>Height:</Text> {playerInfo.heightInCentimeters}cm | {feet}</Text> : ""
+    const playerBirthDate = playerInfo?.birthDate ? <Text><Text style={styles.bioLabel}>Date of birth:</Text> {playerFormattedBirthdate} | [ Age: {playerAge} ] </Text> : ""
+    const playerWeight = playerInfo?.weightInKilograms ? <Text><Text style={styles.bioLabel}>Weight:</Text> {playerInfo.weightInKilograms}kg | {playerInfo.weightInPounds}lbs</Text> : ""
 
     return (
         <>
@@ -106,10 +126,10 @@ export default function PlayerDetailsScreen({ route }){
                         <View style={styles.overlay} />
                         <Text style={styles.sweaterNumber}>{playerNumber}</Text>
                     </View>
-                    {/* <View style={styles.teamBanner}>
+                    <View style={styles.teamBanner}>
                         <Text style={styles.teamName}>{ team }</Text>
                         <SvgUri style={styles.logo} uri={playerInfo.teamLogo} />
-                    </View> */}
+                    </View>
                     <View style={styles.name}>
                         <View>
                             <Text style={styles.firstName}>{player.firstName.default}</Text>
@@ -118,6 +138,12 @@ export default function PlayerDetailsScreen({ route }){
                         <View>
                             <Text style={styles.position}>{playerInfo.position}</Text>
                         </View>
+                    </View>
+                    <View style={styles.playerBiography}>
+                        {playerPlaceOfBirth}
+                        {playerHeight}
+                        {playerBirthDate}
+                        {playerWeight}
                     </View>
                     <View style={styles.statContainer}>
                         <View style={styles.stats}>
@@ -139,7 +165,8 @@ export default function PlayerDetailsScreen({ route }){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        marginBottom: hp('40%'),
     },
     image: {
         width: wp('100%'),
@@ -147,29 +174,32 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         zIndex: 1,
     },
+    playerBiography: {
+        marginVertical: wp('2.5%'),
+        marginHorizontal: wp('10%'),
+    },
+    bioLabel: {
+        fontWeight: "bold",
+    },
     logo: {
        width: hp('10%'),
        justifyContent: "flex-end",
+       height: hp('15%'),
     },
     teamName: {
-        color: "white"
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 15
     },
     teamBanner: {
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: wp('10%'),
-        backgroundColor: "#aaa",
-        height: hp('5%'),
+        backgroundColor: "#92B8C3",
+        height: hp('3.5%'),
         marginBottom: hp('4%'),
-    },
-    crest: {
-        position: "absolute",
-        // top: hp('-10'),
-        // left: wp('-20'),
-        // width: wp("50%"),
-        zIndex: 2,
-        width: hp('10%'),
-        heigth: hp('10%'),
+        alignItems: "center",
+        marginTop: hp('-2%'),
     },
     name: {
         flexDirection: "row",
@@ -183,7 +213,7 @@ const styles = StyleSheet.create({
         fontSize: 100,
         fontWeight: "bold",
         position: "absolute",
-        top: hp('32'),
+        top: hp('38'),
         left: wp('60'),
         color: "white",
         zIndex: 2,
@@ -213,6 +243,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: wp('100%'),
         marginTop: hp('2%'),
+        marginBottom: hp('5%'),
     },
     stat: {
         flexDirection: "row",

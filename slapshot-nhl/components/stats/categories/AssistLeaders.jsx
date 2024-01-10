@@ -17,14 +17,35 @@ export default function AssistLeaders() {
 
     React.useEffect(() => {
         const fetchData = async () => {
-            const year = new Date().getFullYear();
-            const nextYear = year + 1;
-            const response = await fetch(`https://api-web.nhle.com/v1/skater-stats-leaders/${year}${nextYear}/2?categories=assists&limit=10`);
-            const data = await response.json();
-            setAssistLeaders(data.assists)
+            try {
+                let year = new Date().getFullYear();
+                const month = new Date().getMonth();
+                if (month >= 0 && month <= 8) { // July is 6 and September is 8 in JavaScript
+                    year = year - 1;
+                }
+                const nextYear = year + 1;
+                const response = await fetch(`https://api-web.nhle.com/v1/skater-stats-leaders/${year}${nextYear}/2?categories=assists&limit=10`);
+                const data = await response.json();
+                setAssistLeaders(data.assists)
+            } catch(error){
+                console.log("Error: ", error)
+            }
         }
         fetchData();
     }, [])
+
+    let year = new Date().getFullYear();
+    const month = new Date().getMonth();
+    if (month >= 0 && month <= 8) { // July is 6 and September is 8 in JavaScript
+        year = year - 1;
+    }
+    const NextYear = year + 1;
+    let secondYear = Number(NextYear.toString().slice(-2))
+
+    const title = <View style={styles.positionContainer}>
+        <Text style={styles.title}>Assist Leaders for Season {year}/{secondYear}</Text>
+    </View>
+
 
     const labels = <View style={styles.labels}>
         <Text>Rank</Text>
@@ -33,8 +54,6 @@ export default function AssistLeaders() {
     </View>
 
     const players = assistLeaders.map((player, index) => {
-
-        console.log(player.teamLogo)
 
         return (
             <TouchableOpacity 
@@ -70,8 +89,11 @@ export default function AssistLeaders() {
         showsVerticalScrollIndicator={false} // Set to false to hide vertical scroll bar (iOS)
         showsHorizontalScrollIndicator={false} // Set to false to hide horizontal scroll bar (Android)
             style={styles.container}>
-                {labels}
-                {players}
+                <View style={styles.playersListContainer}>
+                    {title}
+                    {labels}
+                    {players}
+                </View>
         </ScrollView>
     )
 
@@ -79,17 +101,23 @@ export default function AssistLeaders() {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: hp("5%"),
+        paddingTop: hp("2.5%"),
         marginHorizontal: wp("8%"),
         marginBottom: hp("20%"),
         zIndex: 2,
-        marginTop: hp("-0.5%")
     }, 
+    playersListContainer: {
+        marginBottom: hp("5%")
+    },
+    title: {
+        fontSize: wp("5%"),
+        fontWeight: "bold",
+    },
     labels: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginBottom: 20,
-        marginTop: 20,
+        marginTop: 10,
     },
     tabContainer: {
         height: hp("100%"),
@@ -126,17 +154,16 @@ const styles = StyleSheet.create({
     },
     playerImage: {
         width: wp("20%"),
-        height: hp("15%"),
-        borderWidth: 2,
-        borderColor: "black",
+        height: hp("10%"),
         shadowColor: "#000",
+        borderRadius: 50,
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        backgroundColor: "white"
+        backgroundColor: "#F4F2F0"
     },
     playerInfo: {
         flexDirection: "row",
